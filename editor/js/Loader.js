@@ -5,10 +5,12 @@ var Loader = function ( editor ) {
 
 	this.loadLocalStorage = function () {
 
-		if ( localStorage.threejsEditor !== undefined ) {
+		var state = editor.localStorage.getKey( 'state' );
+
+		if ( state !== undefined ) {
 
 			var loader = new THREE.ObjectLoader();
-			var scene = loader.parse( JSON.parse( localStorage.threejsEditor ) );
+			var scene = loader.parse( state );
 
 			editor.setScene( scene );
 
@@ -25,8 +27,7 @@ var Loader = function ( editor ) {
 
 		timeout = setTimeout( function () {
 
-			localStorage.threejsEditor = JSON.stringify( exporter.parse( editor.scene ) );
-			console.log( '[' + /\d\d\:\d\d\:\d\d/.exec( new Date() )[ 0 ] + ']', 'Saved state to LocalStorage.' );
+			editor.localStorage.setKey( 'state', exporter.parse( editor.scene ) );
 
 		}, 3000 );
 
@@ -35,6 +36,7 @@ var Loader = function ( editor ) {
 	signals.objectAdded.add( this.saveLocalStorage );
 	signals.objectChanged.add( this.saveLocalStorage );
 	signals.objectRemoved.add( this.saveLocalStorage );
+	signals.sceneGraphChanged.add( this.saveLocalStorage );
 
 	this.loadFile = function ( file ) {
 

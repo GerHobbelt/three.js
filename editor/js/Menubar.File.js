@@ -7,7 +7,7 @@ Menubar.File = function ( editor ) {
 	container.onClick( function () { options.setDisplay( 'block' ) } );
 
 	var title = new UI.Panel();
-	title.setTextContent( 'File' ).setColor( '#666' );
+	title.setTextContent( 'File' );
 	title.setMargin( '0px' );
 	title.setPadding( '8px' );
 	container.add( title );
@@ -28,11 +28,7 @@ Menubar.File = function ( editor ) {
 
 		if ( confirm( 'Are you sure?' ) ) {
 
-			if ( localStorage.threejsEditor !== undefined ) {
-
-				delete localStorage.threejsEditor;
-
-			}
+			editor.localStorage.clear();
 
 			location.href = location.pathname;
 
